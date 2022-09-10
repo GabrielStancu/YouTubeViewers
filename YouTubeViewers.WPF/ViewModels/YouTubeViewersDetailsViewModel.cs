@@ -1,15 +1,35 @@
-﻿namespace YouTubeViewers.WPF.ViewModels;
+﻿using YouTubeViewers.WPF.Models;
+using YouTubeViewers.WPF.Stores;
+
+namespace YouTubeViewers.WPF.ViewModels;
 public class YouTubeViewersDetailsViewModel : ViewModelBase
 {
-    public string Username { get; }
-    public string IsSubscribedDisplay { get; }
-    public string IsMemberDisplay { get; }
+    private readonly SelectedYouTubeViewerStore _selectedYouTubeViewerStore;
+    private YouTubeViewer? SelectedYouTubeViewer => _selectedYouTubeViewerStore.SelectedYouTubeViewer;
 
-    public YouTubeViewersDetailsViewModel()
+    public bool HasSelectedUser => SelectedYouTubeViewer is not null;
+    public string Username => SelectedYouTubeViewer?.Username ?? "Unknown";
+    public string IsSubscribedDisplay => (SelectedYouTubeViewer?.IsSubscribed ?? false) ? "Yes" : "No";
+    public string IsMemberDisplay => (SelectedYouTubeViewer?.IsMember ?? false) ? "Yes" : "No";
+
+    public YouTubeViewersDetailsViewModel(SelectedYouTubeViewerStore selectedYouTubeViewerStore)
     {
-        Username = "Glixus";
-        IsSubscribedDisplay = "Yes";
-        IsMemberDisplay = "No";
+        _selectedYouTubeViewerStore = selectedYouTubeViewerStore;
+        _selectedYouTubeViewerStore.SelectedYouTubeViewerChanged += SelectedYouTubeViewerStore_SelectedYouTubeViewerChanged;
+    }
+
+    protected override void Dispose()
+    {
+        _selectedYouTubeViewerStore.SelectedYouTubeViewerChanged -= SelectedYouTubeViewerStore_SelectedYouTubeViewerChanged;
+        base.Dispose();
+    }
+
+    private void SelectedYouTubeViewerStore_SelectedYouTubeViewerChanged()
+    {
+        OnPropertyChanged(nameof(HasSelectedUser));
+        OnPropertyChanged(nameof(Username));
+        OnPropertyChanged(nameof(IsSubscribedDisplay));
+        OnPropertyChanged(nameof(IsMemberDisplay));
     }
 }
 
