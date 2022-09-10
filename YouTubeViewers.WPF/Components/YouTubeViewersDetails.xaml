@@ -20,7 +20,7 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" FontSize="24" Text="Gabi"/>
+                    <TextBlock Grid.Row="0" FontSize="24" Text="{Binding Username}"/>
 
                     <Grid Grid.Row="1" Margin="0 20 0 0">
                         <Grid.ColumnDefinitions>
@@ -30,7 +30,7 @@
 
                         <TextBlock Grid.Column="0" Text="Is Subscribed?" FontWeight="Bold"/>
 
-                        <TextBlock Grid.Column="1" Text="Yes" Margin="10 0 0 0"/>
+                        <TextBlock Grid.Column="1" Text="{Binding IsSubscribedDisplay}" Margin="10 0 0 0"/>
                     </Grid>
 
                     <Grid Grid.Row="2" Margin="0 20 0 0">
@@ -41,7 +41,7 @@
 
                         <TextBlock Grid.Column="0" Text="Is Member?" FontWeight="Bold"/>
 
-                        <TextBlock Grid.Column="1" Text="Yes" Margin="10 0 0 0"/>
+                        <TextBlock Grid.Column="1" Text="{Binding IsMemberDisplay}" Margin="10 0 0 0"/>
                     </Grid>
                 </Grid>
             </Border>

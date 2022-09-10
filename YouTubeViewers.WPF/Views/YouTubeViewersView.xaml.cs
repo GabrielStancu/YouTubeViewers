@@ -13,16 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace YouTubeViewers.WPF.Views
+namespace YouTubeViewers.WPF.Views;
+
+/// <summary>
+/// Interaction logic for YouTubeViewersView.xaml
+/// </summary>
+public partial class YouTubeViewersView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for YouTubeViewersView.xaml
-    /// </summary>
-    public partial class YouTubeViewersView : UserControl
+    public YouTubeViewersView()
     {
-        public YouTubeViewersView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
