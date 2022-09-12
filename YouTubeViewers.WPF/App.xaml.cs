@@ -20,7 +20,7 @@ public partial class App : Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        var youTubeViewersViewModel = new YouTubeViewersViewModel(_selectedYouTubeViewerStore);
+        var youTubeViewersViewModel = new YouTubeViewersViewModel(_selectedYouTubeViewerStore, _modalNavigationStore);
         MainWindow = new MainWindow()
         {
             DataContext = new MainViewModel(_modalNavigationStore, youTubeViewersViewModel)

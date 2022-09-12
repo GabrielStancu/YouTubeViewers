@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using YouTubeViewers.WPF.Commands;
 using YouTubeViewers.WPF.Models;
 using YouTubeViewers.WPF.Stores;
 
@@ -27,15 +28,21 @@ public class YouTubeViewersListingViewModel : ViewModelBase
 
     private readonly ObservableCollection<YouTubeViewersListingItemViewModel> _youTubeViewersListingItemViewModels;
 
-    public YouTubeViewersListingViewModel(SelectedYouTubeViewerStore selectedYouTubeViewerStore)
+    public YouTubeViewersListingViewModel(SelectedYouTubeViewerStore selectedYouTubeViewerStore,
+        ModalNavigationStore modalNavigationStore)
     {
-        _youTubeViewersListingItemViewModels = new ObservableCollection<YouTubeViewersListingItemViewModel>
-        {
-            new YouTubeViewersListingItemViewModel(new YouTubeViewer("Mary", true, false)),
-            new YouTubeViewersListingItemViewModel(new YouTubeViewer("Sean", false, false)),
-            new YouTubeViewersListingItemViewModel(new YouTubeViewer("Alan", true, true))
-        };
-
         _selectedYouTubeViewerStore = selectedYouTubeViewerStore;
+        _youTubeViewersListingItemViewModels = new ObservableCollection<YouTubeViewersListingItemViewModel>();
+
+        AddYouTubeViewer(new YouTubeViewer("Mary", true, false), modalNavigationStore);
+        AddYouTubeViewer(new YouTubeViewer("Sean", false, false), modalNavigationStore);
+        AddYouTubeViewer(new YouTubeViewer("Alan", true, true), modalNavigationStore);
+    }
+
+    private void AddYouTubeViewer(YouTubeViewer youTubeViewer, ModalNavigationStore modalNavigationStore)
+    {
+        var editCommand = new OpenEditYouTubeViewerCommand(youTubeViewer, modalNavigationStore);
+        var viewModel = new YouTubeViewersListingItemViewModel(youTubeViewer, editCommand);
+        _youTubeViewersListingItemViewModels.Add(viewModel);
     }
 }

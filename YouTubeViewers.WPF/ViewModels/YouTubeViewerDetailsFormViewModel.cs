@@ -3,7 +3,7 @@
 namespace YouTubeViewers.WPF.ViewModels;
 public class YouTubeViewerDetailsFormViewModel : ViewModelBase
 {
-    private string _username;
+    private string _username = string.Empty;
     public string Username
     {
         get => _username;
@@ -40,4 +40,10 @@ public class YouTubeViewerDetailsFormViewModel : ViewModelBase
     public bool CanSubmit => !string.IsNullOrEmpty(Username);
     public ICommand SubmitCommand { get; }
     public ICommand CancelCommand { get; }
+
+    public YouTubeViewerDetailsFormViewModel(ICommand submitCommand, ICommand cancelCommand)
+    {
+        SubmitCommand = submitCommand;
+        CancelCommand = cancelCommand;
+    }
 }

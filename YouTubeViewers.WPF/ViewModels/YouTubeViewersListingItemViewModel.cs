@@ -9,9 +9,10 @@ public class YouTubeViewersListingItemViewModel : ViewModelBase
     public ICommand EditCommand { get; }
     public ICommand DeleteCommand { get; }
 
-    public YouTubeViewersListingItemViewModel(YouTubeViewer youTubeViewer)
+    public YouTubeViewersListingItemViewModel(YouTubeViewer youTubeViewer, ICommand editCommand)
     {
         YouTubeViewer = youTubeViewer;
+        EditCommand = editCommand;
     }
 }
 

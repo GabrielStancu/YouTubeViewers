@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using YouTubeViewers.WPF.ViewModels;
 
 namespace YouTubeViewers.WPF.Stores;
 public class ModalNavigationStore
 {
-    private ViewModelBase _currentViewModel;
-    public ViewModelBase CurrentViewModel
+    private ViewModelBase? _currentViewModel;
+    public ViewModelBase? CurrentViewModel
     {
         get => _currentViewModel;
         set
@@ -21,5 +17,10 @@ public class ModalNavigationStore
 
     public bool IsOpen => CurrentViewModel != null;
 
-    public event Action CurrentViewModelChanged;
+    public event Action? CurrentViewModelChanged;
+
+    public void Close()
+    {
+        CurrentViewModel = null;
+    }
 }
