@@ -70,7 +70,8 @@
 
                             <TextBlock Grid.Column="1" Text="{Binding IsMemberDisplay}" Margin="10 0 0 0" />
                         </Grid>
-                    </Grid></Grid>
+                    </Grid>
+                </Grid>
             </Border>
         </Border>  
     </Grid>
