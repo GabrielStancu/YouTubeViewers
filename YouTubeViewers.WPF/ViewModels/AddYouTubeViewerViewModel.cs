@@ -6,9 +6,9 @@ public class AddYouTubeViewerViewModel : ViewModelBase
 {
     public YouTubeViewerDetailsFormViewModel YouTubeViewerDetailsFormViewModel { get; }
 
-    public AddYouTubeViewerViewModel(ModalNavigationStore modalNavigationStore)
+    public AddYouTubeViewerViewModel(YouTubeViewersStore youTubeViewersStore, ModalNavigationStore modalNavigationStore)
     {
-        var submitCommand = new AddYouTubeViewerCommand(modalNavigationStore);
+        var submitCommand = new AddYouTubeViewerCommand(this, youTubeViewersStore, modalNavigationStore);
         var cancelCommand = new CloseModalCommand(modalNavigationStore);
         YouTubeViewerDetailsFormViewModel = new YouTubeViewerDetailsFormViewModel(submitCommand, cancelCommand);
     }

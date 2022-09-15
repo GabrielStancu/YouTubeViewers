@@ -10,12 +10,13 @@ public class YouTubeViewersViewModel : ViewModelBase
     public YouTubeViewersDetailsViewModel YouTubeViewersDetailsViewModel { get; }
     public ICommand AddYouTubeViewerCommand { get; }
 
-    public YouTubeViewersViewModel(SelectedYouTubeViewerStore selectedYouTubeViewerStore,
+    public YouTubeViewersViewModel(YouTubeViewersStore youTubeViewersStore,
+        SelectedYouTubeViewerStore selectedYouTubeViewerStore,
         ModalNavigationStore modalNavigationStore)
     {
-        YouTubeViewersListingViewModel = new YouTubeViewersListingViewModel(selectedYouTubeViewerStore, modalNavigationStore);
+        YouTubeViewersListingViewModel = new YouTubeViewersListingViewModel(youTubeViewersStore, selectedYouTubeViewerStore, modalNavigationStore);
         YouTubeViewersDetailsViewModel = new YouTubeViewersDetailsViewModel(selectedYouTubeViewerStore);
 
-        AddYouTubeViewerCommand = new OpenAddYouTubeViewerCommand(modalNavigationStore);
+        AddYouTubeViewerCommand = new OpenAddYouTubeViewerCommand(youTubeViewersStore, modalNavigationStore);
     }
 }
