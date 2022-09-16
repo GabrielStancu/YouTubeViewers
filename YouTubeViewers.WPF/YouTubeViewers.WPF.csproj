@@ -9,7 +9,16 @@
 
   <ItemGroup>
     <PackageReference Include="DropdownMenu.WPF" Version="1.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="SimpleModal.WPF" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\YouTubeViewers.Domain\YouTubeViewers.Domain.csproj" />
+    <ProjectReference Include="..\YouTubeViewers.EntityFramework\YouTubeViewers.EntityFramework.csproj" />
   </ItemGroup>
 
 </Project>

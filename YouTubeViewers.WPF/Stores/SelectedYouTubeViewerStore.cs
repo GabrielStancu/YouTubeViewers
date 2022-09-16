@@ -1,16 +1,15 @@
 ﻿using System;
-using YouTubeViewers.WPF.Models;
+using YouTubeViewers.Domain.Models;
 
 namespace YouTubeViewers.WPF.Stores;
 public class SelectedYouTubeViewerStore
 {
-    private readonly YouTubeViewersStore _youTubeViewersStore;
     private YouTubeViewer? _selectedYouTubeViewer;
 
     public SelectedYouTubeViewerStore(YouTubeViewersStore youTubeViewersStore)
     {
-        _youTubeViewersStore = youTubeViewersStore;
-        _youTubeViewersStore.YouTubeViewerUpdated += YouTubeViewersStore_YouTubeViewerUpdated;
+        youTubeViewersStore.YouTubeViewerUpdated += YouTubeViewersStore_YouTubeViewerUpdated;
+        youTubeViewersStore.YouTubeViewerDeleted += YouTubeViewersStore_YouTubeViewerDeleted; 
     }
 
     private void YouTubeViewersStore_YouTubeViewerUpdated(YouTubeViewer youTubeViewer)
@@ -19,6 +18,10 @@ public class SelectedYouTubeViewerStore
         {
             SelectedYouTubeViewer = youTubeViewer;
         }
+    }
+    private void YouTubeViewersStore_YouTubeViewerDeleted(Guid id)
+    {
+        SelectedYouTubeViewer = null;
     }
 
     public YouTubeViewer? SelectedYouTubeViewer
