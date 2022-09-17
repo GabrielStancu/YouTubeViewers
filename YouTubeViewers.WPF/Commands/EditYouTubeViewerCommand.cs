@@ -24,6 +24,7 @@ public class EditYouTubeViewerCommand : AsyncCommandBase
     {
         var formViewModel = _editYouTubeViewerViewModel.YouTubeViewerDetailsFormViewModel;
 
+        formViewModel.ErrorMessage = string.Empty;
         formViewModel.IsSubmitting = true;
 
         var youTubeViewer = new YouTubeViewer(_editYouTubeViewerViewModel.YouTubeViewerId,
@@ -35,9 +36,9 @@ public class EditYouTubeViewerCommand : AsyncCommandBase
         {
             await _youTubeViewersStore.Update(youTubeViewer);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Console.WriteLine(e);
+            formViewModel.ErrorMessage = "Failed to edit YouTube viewer. Please try again later.";
         }
         finally
         {

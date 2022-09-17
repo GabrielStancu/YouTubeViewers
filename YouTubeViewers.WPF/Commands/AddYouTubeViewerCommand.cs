@@ -24,6 +24,7 @@ public class AddYouTubeViewerCommand : AsyncCommandBase
     {
         var formViewModel = _addYouTubeViewerViewModel.YouTubeViewerDetailsFormViewModel;
 
+        formViewModel.ErrorMessage = string.Empty;
         formViewModel.IsSubmitting = true;
 
         var youTubeViewer = new YouTubeViewer(Guid.NewGuid(),
@@ -35,9 +36,9 @@ public class AddYouTubeViewerCommand : AsyncCommandBase
         {
             await _youTubeViewersStore.Create(youTubeViewer);
         }
-        catch (Exception e)
+        catch (Exception )
         {
-            Console.WriteLine(e);
+            formViewModel.ErrorMessage = "Failed to add YouTube viewer. Please try again later.";
         }
         finally
         {

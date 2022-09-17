@@ -52,6 +52,20 @@ public class YouTubeViewerDetailsFormViewModel : ViewModelBase
     public ICommand SubmitCommand { get; }
     public ICommand CancelCommand { get; }
 
+    private string _errorMessage = string.Empty;
+    public string ErrorMessage
+    {
+        get => _errorMessage;
+        set
+        {
+            _errorMessage = value;
+            OnPropertyChanged(nameof(ErrorMessage));
+            OnPropertyChanged(nameof(HasErrorMessage));
+        }
+    }
+
+    public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
+
     public YouTubeViewerDetailsFormViewModel(ICommand submitCommand, ICommand cancelCommand)
     {
         SubmitCommand = submitCommand;

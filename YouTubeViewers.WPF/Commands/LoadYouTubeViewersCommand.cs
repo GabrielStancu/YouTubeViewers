@@ -16,16 +16,17 @@ public class LoadYouTubeViewersCommand : AsyncCommandBase
     }
 
     public override async Task ExecuteAsync(object? parameter)
-    { 
+    {
+        _youTubeViewersViewModel.ErrorMessage = string.Empty;
         _youTubeViewersViewModel.IsLoading = true;
 
         try
         {
             await _youTubeViewersStore.Load();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Console.WriteLine(e);
+            _youTubeViewersViewModel.ErrorMessage = "Failed to load the YouTube viewers. Please restart the application.";
         }
         finally
         {

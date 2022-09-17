@@ -23,6 +23,19 @@ public class YouTubeViewersListingItemViewModel : ViewModelBase
         }
     }
 
+    private string _errorMessage = string.Empty;
+    public string ErrorMessage
+    {
+        get => _errorMessage;
+        set
+        {
+            _errorMessage = value;
+            OnPropertyChanged(nameof(ErrorMessage));
+            OnPropertyChanged(nameof(HasErrorMessage));
+        }
+    }
+
+    public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
     public YouTubeViewersListingItemViewModel(YouTubeViewer youTubeViewer,
         YouTubeViewersStore youTubeViewersStore,

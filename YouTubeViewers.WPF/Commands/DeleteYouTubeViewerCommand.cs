@@ -18,17 +18,18 @@ public class DeleteYouTubeViewerCommand : AsyncCommandBase
 
     public override async Task ExecuteAsync(object? parameter)
     {
+        _youTubeViewersListingItemViewModel.ErrorMessage = string.Empty;
         _youTubeViewersListingItemViewModel.IsDeleting = true;
+        
         var youTubeViewer = _youTubeViewersListingItemViewModel.YouTubeViewer;
 
         try
         {
             await _youTubeViewersStore.Delete(youTubeViewer.Id);
         }
-        catch (Exception e)
+        catch (Exception )
         {
-            Console.WriteLine(e);
-            throw;
+            _youTubeViewersListingItemViewModel.ErrorMessage = "Failed to delete YouTube viewer. Please try again later.";
         }
         finally
         {
