@@ -1,5 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using YouTubeViewers.Domain.Commands;
 using YouTubeViewers.Domain.Queries;
 using YouTubeViewers.EntityFramework;
@@ -7,6 +10,7 @@ using YouTubeViewers.EntityFramework.Commands;
 using YouTubeViewers.EntityFramework.Queries;
 using YouTubeViewers.WPF.Stores;
 using YouTubeViewers.WPF.ViewModels;
+using YouTubeViewers.WPF.HostBuilders;
 
 namespace YouTubeViewers.WPF;
 
@@ -15,51 +19,62 @@ namespace YouTubeViewers.WPF;
 /// </summary>
 public partial class App : Application
 {
-    private readonly ModalNavigationStore _modalNavigationStore;
-    private readonly SelectedYouTubeViewerStore _selectedYouTubeViewerStore;
-    private readonly YouTubeViewersStore _youTubeViewersStore;
+    private readonly IHost _host;
 
-    private readonly YouTubeViewersDbContextFactory _contextFactory;
-    private readonly IGetAllYouTubeViewersQuery _getAllYouTubeViewersQuery;
-    private readonly ICreateYouTubeViewerCommand _createYouTubeViewerCommand;
-    private readonly IUpdateYouTubeViewerCommand _updateYouTubeViewerCommand;
-    private readonly IDeleteYouTubeViewerCommand _deleteYouTubeViewerCommand;
     public App()
     {
-        var connectionString = "Data Source=YouTubeViewers.db";
-        var options = new DbContextOptionsBuilder()
-            .UseSqlite(connectionString)
-            .Options;
+        _host = Host.CreateDefaultBuilder()
+            .AddDbContext()
+            .ConfigureServices((context, services) =>
+            {
+                services.AddSingleton<IGetAllYouTubeViewersQuery, GetAllYouTubeViewersQuery>();
+                services.AddSingleton<ICreateYouTubeViewerCommand, CreateYouTubeViewerCommand>();
+                services.AddSingleton<IUpdateYouTubeViewerCommand, UpdateYouTubeViewerCommand>();
+                services.AddSingleton<IDeleteYouTubeViewerCommand, DeleteYouTubeViewerCommand>();
 
-        _contextFactory = new YouTubeViewersDbContextFactory(options);
-        _getAllYouTubeViewersQuery = new GetAllYouTubeViewersQuery(_contextFactory);
-        _createYouTubeViewerCommand = new CreateYouTubeViewerCommand(_contextFactory);
-        _updateYouTubeViewerCommand = new UpdateYouTubeViewerCommand(_contextFactory);
-        _deleteYouTubeViewerCommand = new DeleteYouTubeViewerCommand(_contextFactory);
+                services.AddSingleton<ModalNavigationStore>();
+                services.AddSingleton<YouTubeViewersStore>();
+                services.AddSingleton<SelectedYouTubeViewerStore>();
 
-        _modalNavigationStore = new ModalNavigationStore();
-        _youTubeViewersStore = new YouTubeViewersStore(_getAllYouTubeViewersQuery, 
-            _createYouTubeViewerCommand, 
-            _updateYouTubeViewerCommand,
-            _deleteYouTubeViewerCommand);
-        _selectedYouTubeViewerStore = new SelectedYouTubeViewerStore(_youTubeViewersStore);
+                services.AddSingleton<MainViewModel>();
+                services.AddTransient<YouTubeViewersViewModel>(CreateYouTubeViewersViewModel);
+
+                services.AddSingleton<MainWindow>(provider => new MainWindow()
+                {
+                    DataContext = provider.GetRequiredService<MainViewModel>()
+                });
+            })
+            .Build();
     }
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        // In case you need to apply migrations at startup
-        using var context = _contextFactory.Create();
-        context.Database.EnsureCreated();
+        _host.Start();
 
-        var youTubeViewersViewModel = YouTubeViewersViewModel.LoadViewModel(
-             _youTubeViewersStore, 
-             _selectedYouTubeViewerStore, 
-             _modalNavigationStore);
-        MainWindow = new MainWindow()
-        {
-            DataContext = new MainViewModel(_modalNavigationStore, youTubeViewersViewModel)
-        };
+        // In case you need to apply migrations at startup
+        var contextFactory = _host.Services.GetRequiredService<YouTubeViewersDbContextFactory>();
+        using var context = contextFactory.Create();
+        context.Database.Migrate();
+
+        MainWindow = _host.Services.GetRequiredService<MainWindow>();
         MainWindow.Show();
         base.OnStartup(e);
+    }
+
+    protected override void OnExit(ExitEventArgs e)
+    {
+        _host.StopAsync();
+        _host.Dispose();
+
+        base.OnExit(e);
+    }
+
+    private YouTubeViewersViewModel CreateYouTubeViewersViewModel(IServiceProvider services)
+    {
+        return YouTubeViewersViewModel.LoadViewModel(
+            services.GetRequiredService<YouTubeViewersStore>(),
+            services.GetRequiredService<SelectedYouTubeViewerStore>(),
+            services.GetRequiredService<ModalNavigationStore>()
+        );
     }
 }
