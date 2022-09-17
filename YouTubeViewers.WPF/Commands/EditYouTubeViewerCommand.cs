@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using YouTubeViewers.Domain.Models;
 using YouTubeViewers.WPF.Stores;
@@ -22,6 +23,9 @@ public class EditYouTubeViewerCommand : AsyncCommandBase
     public override async Task ExecuteAsync(object? parameter)
     {
         var formViewModel = _editYouTubeViewerViewModel.YouTubeViewerDetailsFormViewModel;
+
+        formViewModel.IsSubmitting = true;
+
         var youTubeViewer = new YouTubeViewer(_editYouTubeViewerViewModel.YouTubeViewerId,
             formViewModel.Username,
             formViewModel.IsSubscribed,
@@ -37,6 +41,7 @@ public class EditYouTubeViewerCommand : AsyncCommandBase
         }
         finally
         {
+            formViewModel.IsSubmitting = false;
             _modalNavigationStore.Close();
         }
     }

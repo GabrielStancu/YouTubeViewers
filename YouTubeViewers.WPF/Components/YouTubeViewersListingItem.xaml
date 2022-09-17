@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YouTubeViewers.WPF.Components"
              xmlns:dropdownMenuControl="clr-namespace:DropdownMenuControl;assembly=DropdownMenuControl"
+             xmlns:spinner="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -16,47 +17,81 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Text="{Binding Username}" Grid.Column="0"/>
-                <dropdownMenuControl:DropdownMenu x:Name="Dropdown"
-                                                         Grid.Column="1" 
-                                                         Margin="10 0 0 0">
-                    <Border Background="White" 
-                                                BorderBrush="Gray" 
-                                                BorderThickness="1">
-                        <StackPanel>
-                            <StackPanel.Resources>
-                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                                    <Setter Property="Background" Value="#F0F0F0"/>
-                                    <Setter Property="Foreground" Value="Black"/>
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                    <Setter Property="MinWidth" Value="125"></Setter>
-                                    <EventSetter Event="Click" Handler="Button_Click"/>
+
+                <Grid Grid.Column="1" 
+                      Margin="10 0 0 0">
+                    <Grid>
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Trigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ColorAnimation To="#C7C7C7" Duration="0:0:0.1"
-                                                                                Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"/>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.EnterActions>
-                                            <Trigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ColorAnimation To="#F0F0F0" Duration="0:0:0.1"
-                                                                                Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"/>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.ExitActions>
-                                        </Trigger>
+                                        <DataTrigger Binding="{Binding IsDeleting}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </StackPanel.Resources>
-                            <Button Command="{Binding EditCommand}" Content="Edit"/>
-                            <Button Command="{Binding DeleteCommand}" Content="Delete"/>
-                        </StackPanel>
-                    </Border>
-                </dropdownMenuControl:DropdownMenu>
+                            </Grid.Style>
+
+                            <spinner:LoadingSpinner Diameter="100" 
+                                                    IsLoading="True"
+                                                    Thickness="3"/>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDeleting}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                        </Grid>
+
+                        <dropdownMenuControl:DropdownMenu x:Name="Dropdown">
+                            <Border Background="White" 
+                                                    BorderBrush="Gray" 
+                                                    BorderThickness="1">
+                                <StackPanel>
+                                    <StackPanel.Resources>
+                                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                            <Setter Property="Background" Value="#F0F0F0"/>
+                                            <Setter Property="Foreground" Value="Black"/>
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            <Setter Property="MinWidth" Value="125"></Setter>
+                                            <EventSetter Event="Click" Handler="Button_Click"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Trigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation To="#C7C7C7" Duration="0:0:0.1"
+                                                                                    Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.EnterActions>
+                                                    <Trigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation To="#F0F0F0" Duration="0:0:0.1"
+                                                                                    Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.ExitActions>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Resources>
+                                    <Button Command="{Binding EditCommand}" Content="Edit"/>
+                                    <Button Command="{Binding DeleteCommand}" Content="Delete"/>
+                                </StackPanel>
+                            </Border>
+                        </dropdownMenuControl:DropdownMenu>
+                    </Grid>
+                </Grid>
             </Grid>
         </Border>
     </Grid>

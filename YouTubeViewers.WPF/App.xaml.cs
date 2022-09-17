@@ -51,7 +51,7 @@ public partial class App : Application
         using var context = _contextFactory.Create();
         context.Database.EnsureCreated();
 
-        var youTubeViewersViewModel = new YouTubeViewersViewModel(
+        var youTubeViewersViewModel = YouTubeViewersViewModel.LoadViewModel(
              _youTubeViewersStore, 
              _selectedYouTubeViewerStore, 
              _modalNavigationStore);

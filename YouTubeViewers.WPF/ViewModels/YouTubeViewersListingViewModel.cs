@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
 using YouTubeViewers.Domain.Models;
-using YouTubeViewers.WPF.Commands;
 using YouTubeViewers.WPF.Stores;
 
 namespace YouTubeViewers.WPF.ViewModels;
 
 public class YouTubeViewersListingViewModel : ViewModelBase
 {
-    public ICommand LoadYouTubeViewersCommand { get; }
-
     private YouTubeViewersListingItemViewModel _selectedYouTubeViewerListingItemViewModel;
     public YouTubeViewersListingItemViewModel SelectedYouTubeViewerListingItemViewModel
     {
@@ -44,24 +40,10 @@ public class YouTubeViewersListingViewModel : ViewModelBase
         _modalNavigationStore = modalNavigationStore;
         _youTubeViewersListingItemViewModels = new ObservableCollection<YouTubeViewersListingItemViewModel>();
 
-        LoadYouTubeViewersCommand = new LoadYouTubeViewersCommand(_youTubeViewersStore);
-
         _youTubeViewersStore.YouTubeViewersLoaded += YouTubeViewersStore_YouTubeViewersLoaded;
         _youTubeViewersStore.YouTubeViewerCreated += YouTubeViewersStore_YouTubeViewerCreated;
         _youTubeViewersStore.YouTubeViewerUpdated += YouTubeViewersStore_YouTubeViewerUpdated;
         _youTubeViewersStore.YouTubeViewerDeleted += YouTubeViewersStore_YouTubeViewerDeleted;
-    }
-
-    public static YouTubeViewersListingViewModel LoadViewModel(YouTubeViewersStore youTubeViewersStore,
-        SelectedYouTubeViewerStore selectedYouTubeViewerStore,
-        ModalNavigationStore modalNavigationStore)
-    {
-        var viewModel =
-            new YouTubeViewersListingViewModel(youTubeViewersStore, selectedYouTubeViewerStore, modalNavigationStore);
-
-        viewModel.LoadYouTubeViewersCommand.Execute(null);
-
-        return viewModel;
     }
 
     protected override void Dispose()

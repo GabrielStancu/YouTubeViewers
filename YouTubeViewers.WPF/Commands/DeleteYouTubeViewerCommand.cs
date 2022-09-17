@@ -18,6 +18,7 @@ public class DeleteYouTubeViewerCommand : AsyncCommandBase
 
     public override async Task ExecuteAsync(object? parameter)
     {
+        _youTubeViewersListingItemViewModel.IsDeleting = true;
         var youTubeViewer = _youTubeViewersListingItemViewModel.YouTubeViewer;
 
         try
@@ -28,6 +29,10 @@ public class DeleteYouTubeViewerCommand : AsyncCommandBase
         {
             Console.WriteLine(e);
             throw;
+        }
+        finally
+        {
+            _youTubeViewersListingItemViewModel.IsDeleting = false;
         }
     }
 }

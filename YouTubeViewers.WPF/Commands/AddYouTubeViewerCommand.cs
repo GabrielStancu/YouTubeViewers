@@ -23,6 +23,9 @@ public class AddYouTubeViewerCommand : AsyncCommandBase
     public override async Task ExecuteAsync(object? parameter)
     {
         var formViewModel = _addYouTubeViewerViewModel.YouTubeViewerDetailsFormViewModel;
+
+        formViewModel.IsSubmitting = true;
+
         var youTubeViewer = new YouTubeViewer(Guid.NewGuid(),
             formViewModel.Username,
             formViewModel.IsSubscribed,
@@ -38,6 +41,7 @@ public class AddYouTubeViewerCommand : AsyncCommandBase
         }
         finally
         {
+            formViewModel.IsSubmitting = false;
             _modalNavigationStore.Close();
         }
     }

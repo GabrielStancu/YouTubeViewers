@@ -37,6 +37,17 @@ public class YouTubeViewerDetailsFormViewModel : ViewModelBase
         }
     }
 
+    private bool _isSubmitting;
+    public bool IsSubmitting
+    {
+        get => _isSubmitting;
+        set
+        {
+            _isSubmitting = value;
+            OnPropertyChanged(nameof(IsSubmitting));
+        }
+    }
+
     public bool CanSubmit => !string.IsNullOrEmpty(Username);
     public ICommand SubmitCommand { get; }
     public ICommand CancelCommand { get; }
