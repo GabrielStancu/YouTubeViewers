@@ -25,7 +25,8 @@
             </custom:Modal>
 
             <views:YouTubeViewersView Margin="25"
-                                      DataContext="{Binding YouTubeViewersViewModel}"/>
+                                      DataContext="{Binding YouTubeViewersViewModel}"
+                                      MaxWidth="1000"/>
         </Grid>
     </ScrollViewer>
 </Window>

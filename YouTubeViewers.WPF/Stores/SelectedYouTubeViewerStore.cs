@@ -8,8 +8,14 @@ public class SelectedYouTubeViewerStore
 
     public SelectedYouTubeViewerStore(YouTubeViewersStore youTubeViewersStore)
     {
+        youTubeViewersStore.YouTubeViewerCreated += YouTubeViewersStore_YouTubeViewerCreated;
         youTubeViewersStore.YouTubeViewerUpdated += YouTubeViewersStore_YouTubeViewerUpdated;
         youTubeViewersStore.YouTubeViewerDeleted += YouTubeViewersStore_YouTubeViewerDeleted; 
+    }
+
+    private void YouTubeViewersStore_YouTubeViewerCreated(YouTubeViewer youTubeViewer)
+    {
+        SelectedYouTubeViewer = youTubeViewer;
     }
 
     private void YouTubeViewersStore_YouTubeViewerUpdated(YouTubeViewer youTubeViewer)
